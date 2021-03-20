@@ -1,0 +1,15 @@
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: large;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+img {
+  width: 200px;
+  height: 200px;
+}
