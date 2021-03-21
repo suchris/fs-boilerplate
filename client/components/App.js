@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { HashRouter as Router, Route } from "react-router-dom";
 
 //import any sub-components
 import { getCampuses, getStudents } from "../store";
@@ -19,10 +20,15 @@ class App extends React.Component {
 
   //render
   render() {
-    <div>
-      <Nav />
-      <Campus />
-    </div>;
+    return (
+      <div id="app">
+        <Router>
+          <Route component={Nav} />
+          <Route component={Campus} path="/campuses" exact />
+          <Route component={Student} path="/students" exact />
+        </Router>
+      </div>
+    );
   }
 }
 

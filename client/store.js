@@ -1,6 +1,7 @@
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, bindActionCreators } from "redux";
 import loggerMiddleware from "redux-logger";
 import thunkMiddleware from "redux-thunk";
+import axios from "axios";
 
 // INITIAL STATE
 const initialState = {
@@ -13,15 +14,29 @@ const GET_CAMPUSES = "GET_CAMPUSES";
 const GET_STUDENTS = "GET_STUDENTS";
 
 // ACTION CREATORS
-export const getCampuses = (campuses) => ({
+const getCampusesAction = (campuses) => ({
   type: GET_CAMPUSES,
   campuses,
 });
 
-export const getStudents = (students) => ({
+export const getCampuses = () => {
+  return async (dispatch) => {
+    const campuses = (await axios.get("api/campuses")).data;
+    dispatch(getCampusesAction(campuses));
+  };
+};
+
+const getStudentsAction = (students) => ({
   type: GET_STUDENTS,
   students,
 });
+
+export const getStudents = () => {
+  return async (dispatch) => {
+    const students = (await axios.get("/api/students")).data;
+    dispatch(getStudentsAction(students));
+  };
+};
 
 // REDUCERS
 function reducer(state = initialState, action) {
@@ -29,11 +44,11 @@ function reducer(state = initialState, action) {
     case GET_CAMPUSES:
       const { campuses } = action;
       return { ...state, campuses };
-      break;
+
     case GET_STUDENTS:
       const { students } = action;
       return { ...state, students };
-      break;
+
     default:
       return state;
   }

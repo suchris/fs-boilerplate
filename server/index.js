@@ -16,16 +16,19 @@ app.use(volleyball);
 app.use(express.json());
 
 //use express.static() MAKE SURE THE PATH TO YOUR PUBLIC FOLDER IS RIGHT!
-app.use("/public", express.static(path.join(__dirname, "./public")));
+app.use("/public", express.static(path.join(__dirname, "..", "/public")));
 
 //require in your routes and use them on your api path
 app.use("/api", require("./routes"));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/index.html"));
+  res.sendFile(path.join(__dirname, "..", "/public/index.html"));
 });
 
 //404 handler
+app.get("*", (req, res) => {
+  res.status(404).send("404 Error: Page not found");
+});
 
 //500 handler
 app.use((err, req, res, next) => {

@@ -1,12 +1,31 @@
 import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-const Nav = () => {
+const Nav = ({ campuses, students, location: { pathname } }) => {
   return (
-    <div>
-      <a href="#campuses">Campuses</a>
-      <a href="#students">Students</a>
-    </div>
+    <nav>
+      <Link
+        to="/campuses"
+        className={pathname === "/campuses" ? "selected" : ""}
+      >
+        Campuses ({campuses.length})
+      </Link>
+      <Link
+        to="/students"
+        className={pathname === "/students" ? "selected" : ""}
+      >
+        Students ({students.length})
+      </Link>
+    </nav>
   );
 };
 
-export default Nav;
+const mapStateToProps = (state) => {
+  return {
+    campuses: state.campuses,
+    students: state.students,
+  };
+};
+
+export default connect(mapStateToProps)(Nav);

@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 
 class Student extends Component {
   render() {
-    const { students } = this.props.getStudents();
+    const { students } = this.props;
+    console.log("Student: ", students);
 
     return (
-      <div classNames="students">
+      <div className="students">
         <h3>List of Students</h3>
         <ul>
           {students.map((student) => {
@@ -17,7 +18,6 @@ class Student extends Component {
             );
           })}
         </ul>
-        );
       </div>
     );
   }

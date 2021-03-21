@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 class Campus extends Component {
   render() {
     const { campuses } = this.props;
+    console.log("Campus:", campuses);
 
     return (
-      <div classNames="campuses">
+      <div className="campuses">
         <h3>List of Campus</h3>
         <ul>
           {campuses.map((campus) => {
@@ -18,7 +19,6 @@ class Campus extends Component {
             );
           })}
         </ul>
-        );
       </div>
     );
   }

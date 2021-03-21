@@ -2,8 +2,9 @@ module.exports = {
   entry: ["./client/index.js"],
   output: {
     path: __dirname,
-    filename: "./server/public/bundle.js",
+    filename: "./public/bundle.js",
   },
+  mode: "development",
   resolve: {
     extensions: [".js", ".jsx"],
   },
@@ -14,7 +15,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: "babel-loader",
         options: {
