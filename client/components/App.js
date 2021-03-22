@@ -7,6 +7,8 @@ import { getCampuses, getStudents } from "../store";
 import Nav from "./nav";
 import Campus from "./campus";
 import Student from "./student";
+import SingleCampus from "./single-campus";
+import SingleStudent from "./single-student";
 
 class App extends React.Component {
   //constructor to initialize state
@@ -21,13 +23,14 @@ class App extends React.Component {
   //render
   render() {
     return (
-      <div id="app">
-        <Router>
-          <Route component={Nav} />
-          <Route component={Campus} path="/campuses" exact />
-          <Route component={Student} path="/students" exact />
-        </Router>
-      </div>
+      <Router>
+        <Route component={Nav} />
+        <Route component={Campus} path="/campuses" exact />
+        <Route component={SingleCampus} path="/campuses/:id" exact />
+
+        <Route component={Student} path="/students" exact />
+        <Route component={SingleStudent} path="/students/:id" exact />
+      </Router>
     );
   }
 }

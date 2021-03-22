@@ -7,7 +7,9 @@ const {
 
 router.get("/campuses", async (req, res, next) => {
   try {
-    const campuses = await Campus.findAll();
+    const campuses = await Campus.findAll({
+      include: { model: Student, require: true },
+    });
     if (campuses) {
       return res.status(200).send(campuses);
     }
@@ -17,13 +19,81 @@ router.get("/campuses", async (req, res, next) => {
   }
 });
 
+router.get("/campuses/:id", async (req, res, next) => {
+  try {
+    const campus = await Campus.findByPk(req.params.id, {
+      include: { model: Student, require: true },
+    });
+    if (campus) {
+      return res.status(200).send(campus);
+    }
+    return res.status(400).send({ message: "No campus found" });
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+router.post("/campuses", async (req, res, next) => {
+  try {
+    res.status(201).send(await Campus.create(req.body));
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+router.delete("/campuses/:id", async (req, res, next) => {
+  try {
+    const campus = await Campus.findByPk(req.params.id);
+    if (campus) {
+      await campus.destroy();
+      res.status(204).send(campus);
+    }
+    res.status(400).send(`No campus with id ${req.params.id} found`);
+  } catch (ex) {
+    next(ex);
+  }
+});
+
 router.get("/students", async (req, res, next) => {
   try {
-    const students = await Student.findAll();
+    const students = await Student.findAll({ include: Campus });
     if (students) {
       return res.status(200).send(students);
     }
     return res.status(400).send({ message: "No student found" });
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+router.get("/students/:id", async (req, res, next) => {
+  try {
+    const student = await Student.findByPk(req.params.id, { include: Campus });
+    if (student) {
+      return res.status(200).send(student);
+    }
+    return res.status(400).send({ message: "No student found" });
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+router.post("/students", async (req, res, next) => {
+  try {
+    res.status(201).send(await Student.create(req.body));
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+router.delete("/students/:id", async (req, res, next) => {
+  try {
+    const student = await Student.findByPk(req.params.id);
+    if (student) {
+      await student.destroy();
+      res.status(204).send(student);
+    }
+    res.status(400).send(`No student with id ${req.params.id} found`);
   } catch (ex) {
     next(ex);
   }

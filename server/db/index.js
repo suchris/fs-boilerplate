@@ -28,6 +28,12 @@ const seed = async () => {
       address: faker.address.streetAddress(),
       description: faker.lorem.paragraphs(),
     }),
+    Campus.create({
+      name: "Mars",
+      imageUrl: faker.image.imageUrl(),
+      address: faker.address.streetAddress(),
+      description: faker.lorem.paragraphs(),
+    }),
   ]);
 
   console.log(`${campuses.length} of campus(es) were created.`);
@@ -38,9 +44,17 @@ const seed = async () => {
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
     const email = faker.internet.email();
-    const imageUrl = faker.image.imageUrl();
+    const imageUrl = faker.image.people();
     const gpa = Math.round(Math.random() * 40) / 10;
-    await Student.create({ firstName, lastName, email, imageUrl, gpa });
+    const student = await Student.create({
+      firstName,
+      lastName,
+      email,
+      imageUrl,
+      gpa,
+    });
+    student.campusId = campuses[Math.floor(Math.random() * 2)].id;
+    await student.save();
   }
 
   console.log(`${numOfStudents} of student(s) were created`);

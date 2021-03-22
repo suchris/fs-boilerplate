@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 class Campus extends Component {
   render() {
@@ -9,16 +10,14 @@ class Campus extends Component {
     return (
       <div className="campuses">
         <h3>List of Campus</h3>
-        <ul>
-          {campuses.map((campus) => {
-            return (
-              <li key={campus.id}>
-                <img src={campus.imageUrl}></img>
-                {campus.name}
-              </li>
-            );
-          })}
-        </ul>
+        {campuses.map((campus) => {
+          return (
+            <div key={campus.id}>
+              <img src={campus.imageUrl} />
+              <Link to={`/campuses/${campus.id}`}>{campus.name}</Link>
+            </div>
+          );
+        })}
       </div>
     );
   }
