@@ -1,28 +1,30 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { deleteStudent } from "../store";
 
 class Student extends Component {
   render() {
-    const { students } = this.props;
-    console.log("Student: ", students);
+    const { students, history, deleteStudent } = this.props;
+    console.log("Student: ", students, "history: ", history);
 
     return (
       <div className="students">
-        <Link to="/students/add">Add New Student</Link>
         <h3>List of Students</h3>
-        <ul>
-          {students.map((student) => {
-            return (
-              <li key={student.id}>
-                <img src={student.imageUrl} />
-                <Link to={`/students/${student.id}`}>
-                  {student.firstName} {student.lastName}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <Link to="/students/add">Add New Student</Link>
+        <br></br>
+        {students.map((student) => {
+          return (
+            <div key={student.id}>
+              <img src={student.imageUrl} />
+              <Link to={`/students/${student.id}`}>
+                {student.firstName} {student.lastName}
+              </Link>
+              <br></br>{" "}
+              <button onClick={() => deleteStudent(student, history)}>x</button>
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -34,4 +36,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Student);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteStudent: (student, history) =>
+      dispatch(deleteStudent(student, history)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Student);

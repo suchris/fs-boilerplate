@@ -27,6 +27,15 @@ img {
   align-items: column;
 }
 
+.students {
+  display: flex;
+  align-items: column;
+}
+
+.student > div {
+  width: 25%;
+}
+
 input {
   width: 100%;
 }

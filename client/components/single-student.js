@@ -17,16 +17,12 @@ const SingleStudent = (props) => {
       </h3>
       <p>Email: {student.email}</p>
       <p>GPA: {student.gpa}</p>
-      <p>
-        Affiliate Campus:
-        {student.campus && student.campus.id ? (
-          <Link to={`/campuses/${student.campus.id}`}>
-            {student.campus.name}
-          </Link>
-        ) : (
-          <p>No campus info</p>
-        )}
-      </p>
+      Affiliate Campus:
+      {student.campus && student.campus.id ? (
+        <Link to={`/campuses/${student.campus.id}`}>{student.campus.name}</Link>
+      ) : (
+        <p>No campus info</p>
+      )}
     </div>
   );
 };

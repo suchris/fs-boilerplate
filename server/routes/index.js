@@ -48,7 +48,6 @@ router.delete("/campuses/:id", async (req, res, next) => {
       await campus.destroy();
       res.status(204).send(campus);
     }
-    res.status(400).send(`No campus with id ${req.params.id} found`);
   } catch (ex) {
     next(ex);
   }
@@ -93,7 +92,6 @@ router.delete("/students/:id", async (req, res, next) => {
       await student.destroy();
       res.status(204).send(student);
     }
-    res.status(400).send(`No student with id ${req.params.id} found`);
   } catch (ex) {
     next(ex);
   }

@@ -54,7 +54,7 @@ class AddCampus extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, history) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     createCampus: (campus, history) => dispatch(createCampus(campus, history)),
   };

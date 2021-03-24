@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { deleteCampus } from "../store";
 
 class Campus extends Component {
   render() {
-    const { campuses } = this.props;
-    console.log("Campus:", campuses);
+    const { campuses, history, deleteCampus } = this.props;
+    console.log("Campus:", campuses, "history:", history);
 
     return (
       <div>
@@ -18,6 +19,7 @@ class Campus extends Component {
                 <img src={campus.imageUrl} />
                 <Link to={`/campuses/${campus.id}`}>{campus.name}</Link>
                 <p>{campus.student ? campus.students.length : 0} students</p>
+                <button onClick={() => deleteCampus(campus, history)}>x</button>
               </div>
             );
           })}
@@ -33,4 +35,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Campus);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteCampus: (campus) => dispatch(deleteCampus(campus)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Campus);

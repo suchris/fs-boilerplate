@@ -59,7 +59,7 @@ const deleteCampusAction = (campus) => ({
   campus,
 });
 
-export const deleteCampus = (campus, history) => {
+export const deleteCampus = (campus) => {
   return async (dispatch) => {
     await axios.delete(`/api/campuses/${campus.id}`);
     dispatch(deleteCampusAction(campus));
@@ -111,6 +111,7 @@ export const deleteStudent = (student, history) => {
   return async (dispatch) => {
     await axios.delete(`/api/students/${student.id}`);
     dispatch(deleteStudentAction(student));
+    history.push("/students");
   };
 };
 
@@ -141,6 +142,26 @@ function reducer(state = initialState, action) {
         const { student } = action;
         const { students } = state;
         return { ...state, students: [...students, student] };
+      }
+      break;
+    case DELETE_CAMPUS:
+      {
+        const { campus } = action;
+        const { campuses } = state;
+        return {
+          ...state,
+          campuses: [...campuses.filter((c) => c.id !== campus.id)],
+        };
+      }
+      break;
+    case DELETE_STUDENT:
+      {
+        const { student } = action;
+        const { students } = state;
+        return {
+          ...state,
+          students: [...students.filter((s) => s.id !== student.id)],
+        };
       }
       break;
     default:

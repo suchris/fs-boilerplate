@@ -59,7 +59,7 @@ class AddStudent extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, history) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     createStudent: (student, history) =>
       dispatch(createStudent(student, history)),
