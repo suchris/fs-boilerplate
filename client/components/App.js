@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { HashRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 
 //import any sub-components
 import { getCampuses, getStudents } from "../store";
@@ -9,6 +9,8 @@ import Campus from "./campus";
 import Student from "./student";
 import SingleCampus from "./single-campus";
 import SingleStudent from "./single-student";
+import AddCampus from "./add-campus";
+import AddStudent from "./add-student";
 
 class App extends React.Component {
   //constructor to initialize state
@@ -26,10 +28,15 @@ class App extends React.Component {
       <Router>
         <Route component={Nav} />
         <Route component={Campus} path="/campuses" exact />
-        <Route component={SingleCampus} path="/campuses/:id" exact />
-
+        <Switch>
+          <Route component={AddCampus} path="/campuses/add" exact />
+          <Route component={SingleCampus} path="/campuses/:id" exact />
+        </Switch>
         <Route component={Student} path="/students" exact />
-        <Route component={SingleStudent} path="/students/:id" exact />
+        <Switch>
+          <Route component={AddStudent} path="/students/add" exact />
+          <Route component={SingleStudent} path="/students/:id" exact />
+        </Switch>
       </Router>
     );
   }

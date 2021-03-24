@@ -39,6 +39,7 @@ export const createCampus = (
   { name, imageUrl, address, description },
   history
 ) => {
+  console.log("history", history);
   return async (dispatch) => {
     const campus = (
       await axios.post("/api/campuses", {
@@ -62,7 +63,6 @@ export const deleteCampus = (campus, history) => {
   return async (dispatch) => {
     await axios.delete(`/api/campuses/${campus.id}`);
     dispatch(deleteCampusAction(campus));
-    history.push("/campuses");
   };
 };
 
@@ -111,7 +111,6 @@ export const deleteStudent = (student, history) => {
   return async (dispatch) => {
     await axios.delete(`/api/students/${student.id}`);
     dispatch(deleteStudentAction(student));
-    history.push("/students");
   };
 };
 
@@ -119,13 +118,31 @@ export const deleteStudent = (student, history) => {
 function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_CAMPUSES:
-      const { campuses } = action;
-      return { ...state, campuses };
-
+      {
+        const { campuses } = action;
+        return { ...state, campuses };
+      }
+      break;
     case GET_STUDENTS:
-      const { students } = action;
-      return { ...state, students };
-
+      {
+        const { students } = action;
+        return { ...state, students };
+      }
+      break;
+    case CREATE_CAMPUS:
+      {
+        const { campus } = action;
+        const { campuses } = state;
+        return { ...state, campuses: [...campuses, campus] };
+      }
+      break;
+    case CREATE_STUDENT:
+      {
+        const { student } = action;
+        const { students } = state;
+        return { ...state, students: [...students, student] };
+      }
+      break;
     default:
       return state;
   }

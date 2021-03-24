@@ -21,3 +21,12 @@ img {
   width: 100px;
   height: 100px;
 }
+
+.campuses {
+  display: flex;
+  align-items: column;
+}
+
+input {
+  width: 100%;
+}

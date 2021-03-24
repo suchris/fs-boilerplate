@@ -9,6 +9,7 @@ class Student extends Component {
 
     return (
       <div className="students">
+        <Link to="/students/add">Add New Student</Link>
         <h3>List of Students</h3>
         <ul>
           {students.map((student) => {

@@ -18,7 +18,7 @@ const Campus = db.define("campus", {
   imageUrl: {
     type: STRING(200),
     allowNull: false,
-    defaultValue: "./public/campus.jpg",
+    defaultValue: "./public/campus.jpeg",
   },
   address: {
     type: STRING(200),

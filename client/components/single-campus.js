@@ -18,7 +18,7 @@ const SingleCampus = (props) => {
       <p>{campus.description}</p>
       <h4>Students affiliate with campus:</h4>
       <ul>
-        {campus.students.length === 0 ? (
+        {!campus.students || campus.students.length === 0 ? (
           <p>No students</p>
         ) : (
           campus.students.map((student) => {

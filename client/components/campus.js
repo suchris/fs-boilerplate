@@ -8,16 +8,20 @@ class Campus extends Component {
     console.log("Campus:", campuses);
 
     return (
-      <div className="campuses">
+      <div>
         <h3>List of Campus</h3>
-        {campuses.map((campus) => {
-          return (
-            <div key={campus.id}>
-              <img src={campus.imageUrl} />
-              <Link to={`/campuses/${campus.id}`}>{campus.name}</Link>
-            </div>
-          );
-        })}
+        <Link to="/campuses/add">Add Campus</Link>
+        <div className="campuses">
+          {campuses.map((campus) => {
+            return (
+              <div key={campus.id}>
+                <img src={campus.imageUrl} />
+                <Link to={`/campuses/${campus.id}`}>{campus.name}</Link>
+                <p>{campus.student ? campus.students.length : 0} students</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }

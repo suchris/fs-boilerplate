@@ -39,7 +39,7 @@ const Student = db.define("student", {
   imageUrl: {
     type: STRING,
     allowNull: false,
-    defaultValue: "../../public/student.jpg",
+    defaultValue: "../../public/student.jpeg",
   },
   gpa: {
     type: DECIMAL(2, 1),

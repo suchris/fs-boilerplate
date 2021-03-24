@@ -19,7 +19,7 @@ const SingleStudent = (props) => {
       <p>GPA: {student.gpa}</p>
       <p>
         Affiliate Campus:
-        {student.campus.id ? (
+        {student.campus && student.campus.id ? (
           <Link to={`/campuses/${student.campus.id}`}>
             {student.campus.name}
           </Link>
