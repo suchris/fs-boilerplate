@@ -53,6 +53,17 @@ router.delete("/campuses/:id", async (req, res, next) => {
   }
 });
 
+router.put("/campuses/:id", async (req, res, next) => {
+  try {
+    const campus = await Campus.findByPk(req.params.id);
+    if (campus) {
+      res.status(200).send(await campus.update(req.body));
+    }
+  } catch (ex) {
+    next(ex);
+  }
+});
+
 router.get("/students", async (req, res, next) => {
   try {
     const students = await Student.findAll({ include: Campus });
@@ -91,6 +102,17 @@ router.delete("/students/:id", async (req, res, next) => {
     if (student) {
       await student.destroy();
       res.status(204).send(student);
+    }
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+router.put("/students/:id", async (req, res, next) => {
+  try {
+    const student = await Student.findByPk(req.params.id);
+    if (student) {
+      res.status(200).send(await student.update(req.body));
     }
   } catch (ex) {
     next(ex);

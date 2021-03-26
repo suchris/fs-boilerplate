@@ -18,7 +18,7 @@ class Campus extends Component {
               <div key={campus.id}>
                 <img src={campus.imageUrl} />
                 <Link to={`/campuses/${campus.id}`}>{campus.name}</Link>
-                <p>{campus.student ? campus.students.length : 0} students</p>
+                <p>{campus.students ? campus.students.length : 0} students</p>
                 <button onClick={() => deleteCampus(campus, history)}>x</button>
               </div>
             );

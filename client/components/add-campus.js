@@ -10,6 +10,7 @@ class AddCampus extends Component {
       imageUrl: undefined,
       address: undefined,
       description: undefined,
+      students: [],
     };
 
     this.onChange = this.onChange.bind(this);

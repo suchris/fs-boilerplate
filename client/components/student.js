@@ -20,7 +20,7 @@ class Student extends Component {
               <Link to={`/students/${student.id}`}>
                 {student.firstName} {student.lastName}
               </Link>
-              <br></br>{" "}
+              <br></br>
               <button onClick={() => deleteStudent(student, history)}>x</button>
             </div>
           );
