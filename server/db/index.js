@@ -14,7 +14,7 @@ const seed = async () => {
   // delete data if already exists
   await db.sync({ force: true });
 
-  // generate 2 campus
+  // generate 3 campus
   const campuses = await Promise.all([
     Campus.create({
       name: "Manhattan",
@@ -38,8 +38,8 @@ const seed = async () => {
 
   console.log(`${campuses.length} of campus(es) were created.`);
 
-  // generate 10 students
-  const numOfStudents = 10;
+  // generate 5 students
+  const numOfStudents = 5;
   for (let i = 0; i < numOfStudents; i++) {
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();

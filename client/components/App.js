@@ -5,8 +5,8 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 //import any sub-components
 import { getCampuses, getStudents } from "../store";
 import Nav from "./nav";
-import Campus from "./campus";
-import Student from "./student";
+import Campus from "./Campus";
+import Student from "./Student";
 import SingleCampus from "./single-campus";
 import SingleStudent from "./single-student";
 import AddCampus from "./add-campus";

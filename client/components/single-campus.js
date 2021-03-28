@@ -9,6 +9,8 @@ class SingleCampus extends Component {
   }
 
   render() {
+    console.log("single campus render:", this.props);
+
     const { id } = this.props.match.params;
     const { campuses, unregisterStudent } = this.props;
 

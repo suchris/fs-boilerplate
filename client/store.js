@@ -30,7 +30,7 @@ const getCampusesAction = (campuses) => ({
   campuses,
 });
 
-export const getCampuses = () => {
+const getCampuses = () => {
   return async (dispatch) => {
     const campuses = (await axios.get("/api/campuses")).data;
     dispatch(getCampusesAction(campuses));
@@ -42,7 +42,7 @@ const getCampusAction = (campus) => ({
   campus,
 });
 
-export const getCampus = (id) => {
+const getCampus = (id) => {
   return async (dispatch) => {
     const campus = (await axios.get(`/api/campuses/${id}`)).data;
     dispatch(getCampusAction(campus));
@@ -54,11 +54,7 @@ const createCampusAction = (campus) => ({
   campus,
 });
 
-export const createCampus = (
-  { name, imageUrl, address, description },
-  history
-) => {
-  console.log("history", history);
+const createCampus = ({ name, imageUrl, address, description }, history) => {
   return async (dispatch) => {
     const campus = (
       await axios.post("/api/campuses", {
@@ -68,34 +64,41 @@ export const createCampus = (
         description,
       })
     ).data;
-    dispatch(createCampusAction(campus));
+    const addedCampus = (await axios.get(`/api/campuses/${campus.id}`)).data;
+    dispatch(createCampusAction(addedCampus));
+
     history.push(`/campuses/${campus.id}`);
   };
 };
 
-const deleteCampusAction = (campus) => ({
+const deleteCampusAction = (campus, students) => ({
   type: DELETE_CAMPUS,
   campus,
+  students,
 });
 
-export const deleteCampus = (campus) => {
+const deleteCampus = (campus) => {
   return async (dispatch) => {
     await axios.delete(`/api/campuses/${campus.id}`);
-    dispatch(deleteCampusAction(campus));
+    const students = (await axios.get("/api/students")).data;
+    dispatch(deleteCampusAction(campus, students));
   };
 };
 
-const updateCampusAction = (campus) => ({
+const updateCampusAction = (campus, students) => ({
   type: UPDATE_CAMPUS,
   campus,
+  students,
 });
 
-export const updateCampus = (campus, history) => {
+const updateCampus = (campus, history) => {
   return async (dispatch) => {
-    const updateCampus = (await axios.put(`/api/campuses/${campus.id}`, campus))
+    let updatedCampus = (await axios.put(`/api/campuses/${campus.id}`, campus))
       .data;
-    dispatch(updateCampusAction(updateCampus));
-    history.push(`/campuses/${updateCampus.id}`);
+    updatedCampus = (await axios.get(`/api/campuses/${campus.id}`)).data;
+    const students = (await axios.get("/api/students")).data;
+    dispatch(updateCampusAction(updatedCampus, students));
+    history.push(`/campuses/${updatedCampus.id}`);
   };
 };
 
@@ -105,15 +108,16 @@ const unregisterStduentAction = (campus, student) => ({
   student,
 });
 
-export const unregisterStudent = (campus, student, history) => {
+const unregisterStudent = (campus, student, history) => {
   return async (dispatch) => {
-    const updateStudent = (
-      await axios.put(`/api/students/${student.id}`, {
-        ...student,
-        campusId: null,
-      })
+    let updatedStudent = (
+      await axios.put(`/api/students/${student.id}`, { campusId: null })
     ).data;
-    dispatch(unregisterStduentAction(campus, updateStudent));
+    updatedStudent = { ...updatedStudent, campus: null };
+    const updatedCampus = (await axios.put(`api/campuses/${campus.id}`)).data;
+    dispatch(unregisterStduentAction(updatedCampus, updatedStudent));
+
+    console.log("unregisterStudent: ", campus);
     history.push(`/campuses/${campus.id}`);
   };
 };
@@ -123,7 +127,7 @@ const getStudentsAction = (students) => ({
   students,
 });
 
-export const getStudents = () => {
+const getStudents = () => {
   return async (dispatch) => {
     const students = (await axios.get("/api/students")).data;
     dispatch(getStudentsAction(students));
@@ -135,7 +139,7 @@ const getStudentAction = (student) => ({
   student,
 });
 
-export const getStudent = (id) => {
+const getStudent = (id) => {
   return async (dispatch) => {
     const student = (await axios.get(`/api/students/${id}`)).data;
     dispatch(getStudentAction(student));
@@ -147,7 +151,7 @@ const createStudentAction = (student) => ({
   student,
 });
 
-export const createStudent = (
+const createStudent = (
   { firstName, lastName, email, imageUrl, gpa },
   history
 ) => {
@@ -161,36 +165,44 @@ export const createStudent = (
         gpa,
       })
     ).data;
-    dispatch(createStudentAction(student));
+    const addedStudent = (await axios.get(`/api/students/${student.id}`)).data;
+    dispatch(createStudentAction(addedStudent));
+
     history.push(`/students/${student.id}`);
   };
 };
 
-const deleteStudentAction = (student) => ({
+const deleteStudentAction = (student, campuses) => ({
   type: DELETE_STUDENT,
   student,
+  campuses,
 });
 
-export const deleteStudent = (student, history) => {
+const deleteStudent = (student, history) => {
   return async (dispatch) => {
     await axios.delete(`/api/students/${student.id}`);
-    dispatch(deleteStudentAction(student));
+    const campuses = (await axios.get("/api/campuses")).data;
+    dispatch(deleteStudentAction(student, campuses));
     history.push("/students");
   };
 };
 
-const updateStudentAction = (student) => ({
+const updateStudentAction = (student, campus) => ({
   type: UPDATE_STUDENT,
   student,
+  campus,
 });
 
-export const updateStudent = (student, history) => {
+const updateStudent = (student, history) => {
   return async (dispatch) => {
-    const updateStudent = (
+    const updatedStudent = (
       await axios.put(`/api/students/${student.id}`, student)
     ).data;
-    dispatch(updateStudentAction(updateStudent));
-    history.push(`/students/${updateStudent.id}`);
+    // refetch students data from linked campus
+    const campus = (await axios.get(`api/campuses/${updatedStudent.campusId}`))
+      .data;
+    dispatch(updateStudentAction(updatedStudent, campus));
+    history.push(`/students/${updatedStudent.id}`);
   };
 };
 
@@ -240,39 +252,42 @@ function reducer(state = initialState, action) {
       break;
     case DELETE_CAMPUS:
       {
-        const { campus } = action;
+        const { campus, students } = action;
         const { campuses } = state;
         return {
           ...state,
           campuses: [...campuses.filter((c) => c.id !== campus.id)],
+          students: students,
         };
       }
       break;
     case DELETE_STUDENT:
       {
-        const { student } = action;
+        const { student, campuses } = action;
         const { students } = state;
         return {
           ...state,
           students: [...students.filter((s) => s.id !== student.id)],
+          campuses,
         };
       }
       break;
     case UPDATE_CAMPUS:
       {
-        const { campus } = action;
+        const { campus, students } = action;
         const { campuses } = state;
         return {
           ...state,
           campuses: [
             ...campuses.map((c) => {
               if (c.id === campus.id) {
-                return { ...campus, students: c.students };
+                return { ...campus };
               } else {
                 return c;
               }
             }),
           ],
+          students,
         };
       }
       break;
@@ -280,15 +295,10 @@ function reducer(state = initialState, action) {
       {
         const { campus, student } = action;
 
-        // remove student form campus
-        const studentsAtCampus = campus.students.filter(
-          (s) => s.id !== student.id
-        );
-
         // update campuses
         const campuses = state.campuses.map((c) => {
           if (c.id === campus.id) {
-            return { ...c, students: studentsAtCampus };
+            return { ...c, ...campus };
           } else {
             return c;
           }
@@ -297,7 +307,7 @@ function reducer(state = initialState, action) {
         // update students list
         const students = state.students.map((s) => {
           if (s.id === student.id) {
-            return { ...s, campusId: null };
+            return { ...s, ...student };
           } else {
             return s;
           }
@@ -307,13 +317,19 @@ function reducer(state = initialState, action) {
       break;
     case UPDATE_STUDENT:
       {
-        const { student } = action;
-        const { students } = state;
+        const { student, campus } = action;
+        const { students, campuses } = state;
+
         return {
           ...state,
           students: [
             ...students.map((s) =>
               s.id === student.id ? { ...s, ...student } : s
+            ),
+          ],
+          campuses: [
+            ...campuses.map((c) =>
+              c.id === campus.id ? { ...c, ...campus } : c
             ),
           ],
         };
@@ -330,3 +346,16 @@ const store = createStore(
 );
 
 export default store;
+export {
+  getCampuses,
+  getCampus,
+  createCampus,
+  deleteCampus,
+  updateCampus,
+  unregisterStudent,
+  getStudents,
+  getStudent,
+  createStudent,
+  deleteStudent,
+  updateStudent,
+};

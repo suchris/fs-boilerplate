@@ -35,7 +35,11 @@ router.get("/campuses/:id", async (req, res, next) => {
 
 router.post("/campuses", async (req, res, next) => {
   try {
-    res.status(201).send(await Campus.create(req.body));
+    const campus = await Campus.create(req.body);
+    const addedCampus = await Campus.findByPk(campus.id, {
+      include: { model: Student, require: true },
+    });
+    res.status(201).send(addedCampus);
   } catch (ex) {
     next(ex);
   }
@@ -57,7 +61,11 @@ router.put("/campuses/:id", async (req, res, next) => {
   try {
     const campus = await Campus.findByPk(req.params.id);
     if (campus) {
-      res.status(200).send(await campus.update(req.body));
+      await campus.update(req.body);
+      const updatedCampus = await Campus.findByPk(campus.id, {
+        include: { model: Student, require: true },
+      });
+      res.status(200).send(updatedCampus);
     }
   } catch (ex) {
     next(ex);
