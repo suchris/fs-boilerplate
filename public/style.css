@@ -25,6 +25,11 @@ img {
 .campuses {
   display: flex;
   align-items: column;
+  flex-wrap: wrap;
+}
+
+.campuses > div {
+  width: 33%;
 }
 
 .left-container {
@@ -42,9 +47,15 @@ img {
   float: left;
 }
 
+.bottom-container {
+  bottom: 0;
+  width: 100%;
+}
+
 .students {
   display: flex;
   align-items: column;
+  flex-wrap: wrap;
 }
 
 .students > div {

@@ -5,9 +5,6 @@ import { updateStudent } from "../store";
 class UpdateStudent extends Component {
   constructor(props) {
     super(props);
-
-    console.log("updateStudent:", props);
-
     const { id } = props.match.params;
     const { students } = props;
 
@@ -33,21 +30,15 @@ class UpdateStudent extends Component {
   }
 
   onChange(ev) {
-    console.log(ev.target);
-
     const newState = { ...this.state };
     newState.student[ev.target.name] = ev.target.value;
     this.setState(newState);
   }
 
   onSubmit(ev) {
-    console.log(ev.target);
-
     ev.preventDefault();
-    console.log("updateStudent on Submit", this.state);
 
     const { history, updateStudent } = this.props;
-    console.log("updateStudent:", this.state.student);
     updateStudent(this.state.student, history);
   }
 

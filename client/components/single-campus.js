@@ -9,9 +9,8 @@ class SingleCampus extends Component {
   }
 
   render() {
-    console.log("single campus render:", this.props);
     const { id } = this.props.match.params;
-    const { campuses, unregisterStudent } = this.props;
+    const { campuses, unregisterStudent, history } = this.props;
     const campus = campuses.find((campus) => campus.id === id * 1);
 
     return (
@@ -37,7 +36,11 @@ class SingleCampus extends Component {
                     <Link to={`/students/${student.id}`}>
                       {student.firstName} {student.lastName}
                     </Link>
-                    <button onClick={() => unregisterStudent(campus, student)}>
+                    <button
+                      onClick={() =>
+                        unregisterStudent(campus, student, history)
+                      }
+                    >
                       Unregister
                     </button>
                   </li>
@@ -60,8 +63,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    unregisterStudent: (campus, student) =>
-      dispatch(unregisterStudent(campus, student)),
+    unregisterStudent: (campus, student, history) =>
+      dispatch(unregisterStudent(campus, student, history)),
   };
 };
 

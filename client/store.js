@@ -8,7 +8,8 @@ const initialState = {
   campuses: [],
   students: [],
   selectedCampus: undefined,
-  selectedStudent: undefined,
+  selectedStudents: undefined,
+  unassignedStudents: [],
 };
 
 // ACTION TYPES
@@ -23,6 +24,7 @@ const DELETE_STUDENT = "DELETE_STUDENT";
 const UPDATE_CAMPUS = "UPDATE_CAMPUS";
 const UPDATE_STUDENT = "UPDATE_STUDENT";
 const UNREGISTER_STUDENT = "UNREGISTER_STUDENT";
+const REGISTER_STUDENT = "REGISTER_STUDENT";
 
 // ACTION CREATORS
 const getCampusesAction = (campuses) => ({
@@ -114,10 +116,29 @@ const unregisterStudent = (campus, student, history) => {
       await axios.put(`/api/students/${student.id}`, { campusId: null })
     ).data;
     updatedStudent = { ...updatedStudent, campus: null };
-    const updatedCampus = (await axios.put(`api/campuses/${campus.id}`)).data;
+    const updatedCampus = (await axios.get(`api/campuses/${campus.id}`)).data;
     dispatch(unregisterStduentAction(updatedCampus, updatedStudent));
 
-    console.log("unregisterStudent: ", campus);
+    history.push(`/campuses/${campus.id}`);
+  };
+};
+
+const registerStudentAction = (campus, student) => ({
+  type: REGISTER_STUDENT,
+  campus,
+  student,
+});
+
+const registerStudent = (campus, student, history) => {
+  console.log("registerStudent: ", campus, student);
+  return async (dispatch) => {
+    let updatedStudent = (
+      await axios.put(`/api/students/${student.id}`, { campusId: campus.id })
+    ).data;
+    updatedStudent = { ...updatedStudent, campus };
+    const updatedCampus = (await axios.get(`api/campuses/${campus.id}`)).data;
+    dispatch(registerStudentAction(updatedCampus, updatedStudent));
+
     history.push(`/campuses/${campus.id}`);
   };
 };
@@ -227,7 +248,8 @@ function reducer(state = initialState, action) {
     case GET_STUDENTS:
       {
         const { students } = action;
-        return { ...state, students };
+        const unassignedStudents = students.filter((s) => s.campusId === null);
+        return { ...state, students, unassignedStudents };
       }
       break;
     case GET_STUDENT:
@@ -249,8 +271,14 @@ function reducer(state = initialState, action) {
     case CREATE_STUDENT:
       {
         const { student } = action;
-        const { students } = state;
-        return { ...state, students: [...students, student] };
+        const { students, unassignedStudents } = state;
+        if (student.campusId === null)
+          unassignedStudents = [...unassignedStudents, student];
+        return {
+          ...state,
+          students: [...students, student],
+          unassignedStudents,
+        };
       }
       break;
     case DELETE_CAMPUS:
@@ -267,10 +295,13 @@ function reducer(state = initialState, action) {
     case DELETE_STUDENT:
       {
         const { student, campuses } = action;
-        const { students } = state;
+        const { students, unassignedStudents } = state;
         return {
           ...state,
-          students: [...students.filter((s) => s.id !== student.id)],
+          students: [
+            ...students.filter((s) => s.id !== student.id),
+            ...unassignedStudents.filter((s) => s.id !== student.id),
+          ],
           campuses,
         };
       }
@@ -307,7 +338,7 @@ function reducer(state = initialState, action) {
           }
         });
 
-        // update students list
+        // update students list and unassignedStudents list
         const students = state.students.map((s) => {
           if (s.id === student.id) {
             return { ...s, ...student };
@@ -315,7 +346,39 @@ function reducer(state = initialState, action) {
             return s;
           }
         });
-        return { ...state, campuses, students };
+
+        const unassignedStudents = [...state.unassignedStudents, student];
+
+        return { ...state, campuses, students, unassignedStudents };
+      }
+      break;
+    case REGISTER_STUDENT:
+      {
+        const { campus, student } = action;
+
+        // update campuses
+        const campuses = state.campuses.map((c) => {
+          if (c.id === campus.id) {
+            return { ...c, ...campus };
+          } else {
+            return c;
+          }
+        });
+
+        // update students list and unassignedStudents list
+        const students = state.students.map((s) => {
+          if (s.id === student.id) {
+            return { ...s, ...student };
+          } else {
+            return s;
+          }
+        });
+
+        const unassignedStudents = state.unassignedStudents.filter(
+          (s) => s.id !== student.id
+        );
+
+        return { ...state, campuses, students, unassignedStudents };
       }
       break;
     case UPDATE_STUDENT:
@@ -359,6 +422,7 @@ export {
   deleteCampus,
   updateCampus,
   unregisterStudent,
+  registerStudent,
   getStudents,
   getStudent,
   createStudent,

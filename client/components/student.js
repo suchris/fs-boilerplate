@@ -6,8 +6,6 @@ import { deleteStudent } from "../store";
 class Student extends Component {
   render() {
     const { students, history, deleteStudent } = this.props;
-    console.log("Student: ", students, "history: ", history);
-
     return (
       <div>
         <h3>List of Students</h3>

@@ -6,8 +6,6 @@ import { deleteCampus } from "../store";
 class Campus extends Component {
   render() {
     const { campuses, history, deleteCampus } = this.props;
-    console.log("Campus:", campuses, "history:", history);
-
     return (
       <div>
         <h3>List of Campus</h3>
