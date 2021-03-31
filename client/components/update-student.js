@@ -47,6 +47,7 @@ class UpdateStudent extends Component {
     console.log("updateStudent on Submit", this.state);
 
     const { history, updateStudent } = this.props;
+    console.log("updateStudent:", this.state.student);
     updateStudent(this.state.student, history);
   }
 

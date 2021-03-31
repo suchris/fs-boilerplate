@@ -9,22 +9,25 @@ class Student extends Component {
     console.log("Student: ", students, "history: ", history);
 
     return (
-      <div className="students">
+      <div>
         <h3>List of Students</h3>
         <Link to="/students/add">Add New Student</Link>
-        <br></br>
-        {students.map((student) => {
-          return (
-            <div key={student.id}>
-              <img src={student.imageUrl} />
-              <Link to={`/students/${student.id}`}>
-                {student.firstName} {student.lastName}
-              </Link>
-              <br></br>
-              <button onClick={() => deleteStudent(student, history)}>x</button>
-            </div>
-          );
-        })}
+        <hr></hr>
+        <div className="students">
+          {students.map((student) => {
+            return (
+              <div key={student.id}>
+                <img src={student.imageUrl} />
+                <Link to={`/students/${student.id}`}>
+                  {student.firstName} {student.lastName}
+                </Link>
+                <button onClick={() => deleteStudent(student, history)}>
+                  x
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }

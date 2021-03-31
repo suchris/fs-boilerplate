@@ -199,8 +199,11 @@ const updateStudent = (student, history) => {
       await axios.put(`/api/students/${student.id}`, student)
     ).data;
     // refetch students data from linked campus
-    const campus = (await axios.get(`api/campuses/${updatedStudent.campusId}`))
-      .data;
+    let campus = null;
+    if (updatedStudent.campusId !== null) {
+      campus = (await axios.get(`api/campuses/${updatedStudent.campusId}`))
+        .data;
+    }
     dispatch(updateStudentAction(updatedStudent, campus));
     history.push(`/students/${updatedStudent.id}`);
   };
@@ -320,6 +323,13 @@ function reducer(state = initialState, action) {
         const { student, campus } = action;
         const { students, campuses } = state;
 
+        let newCampuses = campuses;
+        if (campus !== null) {
+          newCampuses = newCampuses.map((c) =>
+            c.id === campus.id ? { ...c, ...campus } : c
+          );
+        }
+
         return {
           ...state,
           students: [
@@ -327,11 +337,7 @@ function reducer(state = initialState, action) {
               s.id === student.id ? { ...s, ...student } : s
             ),
           ],
-          campuses: [
-            ...campuses.map((c) =>
-              c.id === campus.id ? { ...c, ...campus } : c
-            ),
-          ],
+          campuses: [...newCampuses],
         };
       }
       break;

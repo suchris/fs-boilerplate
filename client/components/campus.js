@@ -12,6 +12,7 @@ class Campus extends Component {
       <div>
         <h3>List of Campus</h3>
         <Link to="/campuses/add">Add Campus</Link>
+        <hr></hr>
         <div className="campuses">
           {campuses.map((campus) => {
             return (

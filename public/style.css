@@ -27,13 +27,28 @@ img {
   align-items: column;
 }
 
+.left-container {
+  float: left;
+  width: 30%;
+}
+
+.left-container > img {
+  width: 320px;
+  height: 240px;
+}
+
+.right-container {
+  width: 70%;
+  float: left;
+}
+
 .students {
   display: flex;
   align-items: column;
 }
 
-.student > div {
-  width: 25%;
+.students > div {
+  width: 33%;
 }
 
 input {
