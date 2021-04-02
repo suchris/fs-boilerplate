@@ -272,12 +272,13 @@ function reducer(state = initialState, action) {
       {
         const { student } = action;
         const { students, unassignedStudents } = state;
+        let newUnassignedStudents = [...unassignedStudents];
         if (student.campusId === null)
-          unassignedStudents = [...unassignedStudents, student];
+          newUnassignedStudents = [...unassignedStudents, student];
         return {
           ...state,
           students: [...students, student],
-          unassignedStudents,
+          newUnassignedStudents,
         };
       }
       break;
@@ -298,8 +299,8 @@ function reducer(state = initialState, action) {
         const { students, unassignedStudents } = state;
         return {
           ...state,
-          students: [
-            ...students.filter((s) => s.id !== student.id),
+          students: [...students.filter((s) => s.id !== student.id)],
+          unassignedStudents: [
             ...unassignedStudents.filter((s) => s.id !== student.id),
           ],
           campuses,
@@ -384,7 +385,7 @@ function reducer(state = initialState, action) {
     case UPDATE_STUDENT:
       {
         const { student, campus } = action;
-        const { students, campuses } = state;
+        const { students, campuses, unassignedStudents } = state;
 
         let newCampuses = campuses;
         if (campus !== null) {
@@ -397,6 +398,11 @@ function reducer(state = initialState, action) {
           ...state,
           students: [
             ...students.map((s) =>
+              s.id === student.id ? { ...s, ...student } : s
+            ),
+          ],
+          unassignedStudents: [
+            ...unassignedStudents.map((s) =>
               s.id === student.id ? { ...s, ...student } : s
             ),
           ],

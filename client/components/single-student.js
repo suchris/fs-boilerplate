@@ -13,6 +13,10 @@ class SingleStudent extends Component {
 
     const student = students.find((student) => student.id === id * 1);
 
+    if (!student) {
+      return <h3>Loading...</h3>;
+    }
+
     return (
       <div className="student" key={student.id}>
         <div className="left-container">

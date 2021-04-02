@@ -13,6 +13,10 @@ class SingleCampus extends Component {
     const { campuses, unregisterStudent, history } = this.props;
     const campus = campuses.find((campus) => campus.id === id * 1);
 
+    if (!campus) {
+      return <h3>Loading...</h3>;
+    }
+
     return (
       <div className="campus" key={campus.id}>
         <div className="left-container">

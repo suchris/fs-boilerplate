@@ -44,6 +44,11 @@ class UpdateStudent extends Component {
 
   render() {
     const { student } = this.state;
+
+    if (!student) {
+      return <h3>Loading...</h3>;
+    }
+
     return (
       <div>
         <form onSubmit={this.onSubmit}>

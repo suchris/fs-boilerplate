@@ -6,6 +6,11 @@ import { deleteCampus } from "../store";
 class Campus extends Component {
   render() {
     const { campuses, history, deleteCampus } = this.props;
+
+    if (!campuses) {
+      return <h3>Loading...</h3>;
+    }
+
     return (
       <div>
         <h3>List of Campus</h3>

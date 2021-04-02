@@ -8,7 +8,10 @@ const {
 router.get("/campuses", async (req, res, next) => {
   try {
     const campuses = await Campus.findAll({
-      include: { model: Student, require: true },
+      include: {
+        model: Student,
+        require: true,
+      },
     });
     if (campuses) {
       return res.status(200).send(campuses);
@@ -22,7 +25,10 @@ router.get("/campuses", async (req, res, next) => {
 router.get("/campuses/:id", async (req, res, next) => {
   try {
     const campus = await Campus.findByPk(req.params.id, {
-      include: { model: Student, require: true },
+      include: {
+        model: Student,
+        require: true,
+      },
     });
     if (campus) {
       return res.status(200).send(campus);

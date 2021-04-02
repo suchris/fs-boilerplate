@@ -37,6 +37,7 @@ class AddStudent extends Component {
 
   render() {
     const { firstName, lastName, email, imageUrl, gpa } = this.state;
+
     return (
       <div>
         <form onSubmit={this.onSubmit}>

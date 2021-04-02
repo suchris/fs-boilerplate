@@ -37,6 +37,7 @@ class AddCampus extends Component {
 
   render() {
     const { name, imageUrl, address, description } = this.state;
+
     return (
       <div>
         <form onSubmit={this.onSubmit}>

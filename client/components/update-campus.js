@@ -64,6 +64,11 @@ class UpdateCampus extends Component {
 
   render() {
     const { campus, unassignedStudents } = this.state;
+
+    if (!campus) {
+      return <h3>Loading...</h3>;
+    }
+
     return (
       <div>
         <form onSubmit={this.onSubmit}>

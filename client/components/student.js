@@ -6,6 +6,11 @@ import { deleteStudent } from "../store";
 class Student extends Component {
   render() {
     const { students, history, deleteStudent } = this.props;
+
+    if (!students) {
+      return <h3>Loading...</h3>;
+    }
+
     return (
       <div>
         <h3>List of Students</h3>

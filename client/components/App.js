@@ -32,17 +32,16 @@ class App extends React.Component {
         <Route component={Nav} />
         <Route component={Campus} path="/campuses" exact />
         <Switch>
-          <Route component={AddCampus} path="/campuses/add" exact />
-          <Route component={SingleCampus} path="/campuses/:id" exact />
+          <Route component={AddCampus} path="/campuses/add" />
+          <Route component={SingleCampus} path="/campuses/:id" />
         </Switch>
-        <Route component={UpdateCampus} path="/campuses/:id/update" exact />
-
+        <Route component={UpdateCampus} path="/campuses/:id/update" />
         <Route component={Student} path="/students" exact />
         <Switch>
           <Route component={AddStudent} path="/students/add" exact />
           <Route component={SingleStudent} path="/students/:id" exact />
         </Switch>
-        <Route component={UpdateStudent} path="/students/:id/update" exact />
+        <Route component={UpdateStudent} path="/students/:id/update" />
       </Router>
     );
   }
