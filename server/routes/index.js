@@ -14,9 +14,9 @@ router.get("/campuses", async (req, res, next) => {
       },
     });
     if (campuses) {
-      return res.status(200).send(campuses);
+      res.status(200).send(campuses);
     }
-    return res.status(400).send({ message: "No campus found" });
+    res.status(400).send({ message: "No campus found" });
   } catch (ex) {
     next(ex);
   }
@@ -31,9 +31,9 @@ router.get("/campuses/:id", async (req, res, next) => {
       },
     });
     if (campus) {
-      return res.status(200).send(campus);
+      res.status(200).send(campus);
     }
-    return res.status(400).send({ message: "No campus found" });
+    res.status(400).send({ message: "No campus found" });
   } catch (ex) {
     next(ex);
   }
@@ -71,19 +71,14 @@ router.delete("/campuses/:id", async (req, res, next) => {
 
 router.put("/campuses/:id", async (req, res, next) => {
   try {
-    const campus = await Campus.findByPk(req.params.id);
+    const { id } = req.params;
+    const campus = await Campus.findByPk(id);
     if (campus) {
-      const updatedCampus = { ...campus };
-      for (const key in updatedCampus) {
-        if (req.body.hasOwnProperty(key)) {
-          if (req.body[key] !== updatedCampus[key]) {
-            updatedCampus[key] = req.body[key];
-          }
-        }
-      }
-      await campus.save();
+      const { name, address } = req.body;
+      const updatedCampus = await campus.update({ name, address });
       res.status(200).send(updatedCampus);
     }
+    res.status(400).send(`No campus with id ${id} is found`);
   } catch (ex) {
     next(ex);
   }
@@ -93,9 +88,9 @@ router.get("/students", async (req, res, next) => {
   try {
     const students = await Student.findAll({ include: Campus });
     if (students) {
-      return res.status(200).send(students);
+      res.status(200).send(students);
     }
-    return res.status(400).send({ message: "No student found" });
+    res.status(400).send({ message: "No student found" });
   } catch (ex) {
     next(ex);
   }
@@ -105,9 +100,9 @@ router.get("/students/:id", async (req, res, next) => {
   try {
     const student = await Student.findByPk(req.params.id, { include: Campus });
     if (student) {
-      return res.status(200).send(student);
+      res.status(200).send(student);
     }
-    return res.status(400).send({ message: "No student found" });
+    res.status(400).send({ message: "No student found" });
   } catch (ex) {
     next(ex);
   }
@@ -144,20 +139,18 @@ router.delete("/students/:id", async (req, res, next) => {
 
 router.put("/students/:id", async (req, res, next) => {
   try {
-    const student = await Student.findByPk(req.params.id);
-
+    const { id } = req.params;
+    const student = await Student.findByPk(id);
     if (student) {
-      const updatedStudent = { ...student };
-      for (const key in updatedStudent) {
-        if (req.body.hasOwnProperty(key)) {
-          if (req.body[key] !== updatedStudent[key]) {
-            updatedStudent[key] = req.body[key];
-          }
-        }
-      }
-      await student.save();
+      const { firstName, lastName, email } = req.body;
+      const updatedStudent = await student.update({
+        firstName,
+        lastName,
+        email,
+      });
       res.status(200).send(updatedStudent);
     }
+    res.status(400).send(`No student with id ${id} is found`);
   } catch (ex) {
     next(ex);
   }

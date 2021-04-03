@@ -113,15 +113,17 @@ const createCampus = ({ name, imageUrl, address, description }, history) => {
   };
 };
 
-const deleteCampus = (campus) => {
+const deleteCampus = (campus, history) => {
   return async (dispatch) => {
     await axios.delete(`/api/campuses/${campus.id}`);
     const students = (await axios.get("/api/students")).data;
     dispatch(deleteCampusAction(campus, students));
+    history.push("/campuses");
   };
 };
 
 const updateCampus = (campus, history) => {
+  console.log("updateCampus:", campus);
   return async (dispatch) => {
     let updatedCampus = (await axios.put(`/api/campuses/${campus.id}`, campus))
       .data;
