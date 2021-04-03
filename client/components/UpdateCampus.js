@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateCampus, registerStudent } from "../store";
+import { updateCampus, registerStudent } from "../redux/actions";
 import { Link } from "react-router-dom";
 
 class UpdateCampus extends Component {

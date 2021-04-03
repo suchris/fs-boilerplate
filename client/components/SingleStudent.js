@@ -18,17 +18,19 @@ class SingleStudent extends Component {
     }
 
     return (
-      <div className="student" key={student.id}>
-        <div className="left-container">
-          <img src={student.imageUrl} />
-        </div>
-        <div className="right-container">
-          <h3>
-            {student.firstName} {student.lastName}
-          </h3>
-          <p>Email: {student.email}</p>
-          <p>GPA: {student.gpa}</p>
-          <Link to={`/students/${student.id}/update`}>Update</Link>
+      <div className="container" key={student.id}>
+        <div className="top-container">
+          <div className="left-container">
+            <img src={student.imageUrl} />
+          </div>
+          <div className="right-container">
+            <h3>
+              {student.firstName} {student.lastName}
+            </h3>
+            <p>Email: {student.email}</p>
+            <p>GPA: {student.gpa}</p>
+            <Link to={`/students/${student.id}/update`}>Update</Link>
+          </div>
         </div>
         <div className="bottom-container">
           Affiliate Campus:

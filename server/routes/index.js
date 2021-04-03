@@ -41,7 +41,13 @@ router.get("/campuses/:id", async (req, res, next) => {
 
 router.post("/campuses", async (req, res, next) => {
   try {
-    const campus = await Campus.create(req.body);
+    const { name, address, imageUrl, description } = req.body;
+    const campus = await Campus.create({
+      name,
+      address,
+      imageUrl,
+      description,
+    });
     const addedCampus = await Campus.findByPk(campus.id, {
       include: { model: Student, require: true },
     });
@@ -67,10 +73,15 @@ router.put("/campuses/:id", async (req, res, next) => {
   try {
     const campus = await Campus.findByPk(req.params.id);
     if (campus) {
-      await campus.update(req.body);
-      const updatedCampus = await Campus.findByPk(campus.id, {
-        include: { model: Student, require: true },
-      });
+      const updatedCampus = { ...campus };
+      for (const key in updatedCampus) {
+        if (req.body.hasOwnProperty(key)) {
+          if (req.body[key] !== updatedCampus[key]) {
+            updatedCampus[key] = req.body[key];
+          }
+        }
+      }
+      await campus.save();
       res.status(200).send(updatedCampus);
     }
   } catch (ex) {
@@ -104,7 +115,16 @@ router.get("/students/:id", async (req, res, next) => {
 
 router.post("/students", async (req, res, next) => {
   try {
-    res.status(201).send(await Student.create(req.body));
+    const { firstName, lastName, email, imageUrl, gpa } = req.body;
+    res.status(201).send(
+      await Student.create({
+        firstName,
+        lastName,
+        email,
+        imageUrl,
+        gpa,
+      })
+    );
   } catch (ex) {
     next(ex);
   }
@@ -125,8 +145,18 @@ router.delete("/students/:id", async (req, res, next) => {
 router.put("/students/:id", async (req, res, next) => {
   try {
     const student = await Student.findByPk(req.params.id);
+
     if (student) {
-      res.status(200).send(await student.update(req.body));
+      const updatedStudent = { ...student };
+      for (const key in updatedStudent) {
+        if (req.body.hasOwnProperty(key)) {
+          if (req.body[key] !== updatedStudent[key]) {
+            updatedStudent[key] = req.body[key];
+          }
+        }
+      }
+      await student.save();
+      res.status(200).send(updatedStudent);
     }
   } catch (ex) {
     next(ex);

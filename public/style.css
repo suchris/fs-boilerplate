@@ -1,6 +1,6 @@
 body {
-  font-family: Tahoma;
-  font-size: large;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
 }
 
 nav {
@@ -26,10 +26,19 @@ img {
   display: flex;
   align-items: column;
   flex-wrap: wrap;
+  text-align: left;
 }
 
 .campuses > div {
   width: 33%;
+}
+
+.container {
+  text-align: left;
+}
+
+.top-container {
+  display: flex;
 }
 
 .left-container {
@@ -48,7 +57,6 @@ img {
 }
 
 .bottom-container {
-  bottom: 0;
   width: 100%;
 }
 
@@ -56,6 +64,7 @@ img {
   display: flex;
   align-items: column;
   flex-wrap: wrap;
+  text-align: left;
 }
 
 .students > div {

@@ -9,7 +9,8 @@
 		"build:dev": "webpack -w",
 		"start": "node server/index.js",
 		"start:dev": "npm run build:dev & nodemon --ignore client --ignore server/public",
-		"seed": "node server/seed.js"
+		"seed": "node server/seed.js",
+		"deploy": "npm run build && git push heroku master"
 	},
 	"author": "",
 	"license": "ISC",

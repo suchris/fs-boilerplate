@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { deleteStudent } from "../store";
+import { deleteStudent } from "../redux/actions";
 
-class Student extends Component {
+class StudentList extends Component {
   render() {
     const { students, history, deleteStudent } = this.props;
 
@@ -14,7 +14,7 @@ class Student extends Component {
     return (
       <div>
         <h3>List of Students</h3>
-        <Link to="/students/add">Add New Student</Link>
+        <Link to="/students/create">Add New Student</Link>
         <hr></hr>
         <div className="students">
           {students.map((student) => {
@@ -49,4 +49,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Student);
+export default connect(mapStateToProps, mapDispatchToProps)(StudentList);

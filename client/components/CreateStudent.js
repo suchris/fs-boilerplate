@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createStudent } from "../store";
+import { createStudent } from "../redux/actions";
 
-class AddStudent extends Component {
+class CreateStudent extends Component {
   constructor() {
     super();
     this.state = {
@@ -18,19 +18,13 @@ class AddStudent extends Component {
   }
 
   onChange(ev) {
-    console.log(ev.target);
-
     const newState = { ...this.state };
     newState[ev.target.name] = ev.target.value;
     this.setState(newState);
   }
 
   onSubmit(ev) {
-    console.log(ev.target);
-
     ev.preventDefault();
-    console.log(this.state);
-
     const { history, createStudent } = this.props;
     createStudent(this.state, history);
   }
@@ -41,18 +35,12 @@ class AddStudent extends Component {
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <label>
-            First Name
-            <input type="text" name="firstName" onChange={this.onChange} />
-          </label>
-          <label>
-            Last Name
-            <input type="text" name="lastName" onChange={this.onChange} />
-          </label>
-          <label>
-            Email
-            <input type="text" name="email" onChange={this.onChange} />
-          </label>
+          <label>First Name </label>
+          <input type="text" name="firstName" onChange={this.onChange} />
+          <label>Last Name </label>
+          <input type="text" name="lastName" onChange={this.onChange} />
+          <label>Email </label>
+          <input type="text" name="email" onChange={this.onChange} />
           <button disabled={!firstName || !lastName || !email}>Add</button>
         </form>
       </div>
@@ -67,4 +55,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddStudent);
+export default connect(null, mapDispatchToProps)(CreateStudent);

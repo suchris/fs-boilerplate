@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createCampus } from "../store";
+import { createCampus } from "../redux/actions";
 
-class AddCampus extends Component {
+class CreateCampus extends Component {
   constructor() {
     super();
     this.state = {
@@ -62,4 +62,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddCampus);
+export default connect(null, mapDispatchToProps)(CreateCampus);

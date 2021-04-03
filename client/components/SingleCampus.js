@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { unregisterStudent } from "../store";
+import { unregisterStudent } from "../redux/actions";
 
 class SingleCampus extends Component {
   constructor(props) {
@@ -18,15 +18,17 @@ class SingleCampus extends Component {
     }
 
     return (
-      <div className="campus" key={campus.id}>
-        <div className="left-container">
-          <img src={campus.imageUrl} />
-        </div>
-        <div className="right-container">
-          <h3>{campus.name}</h3>
-          <small>{campus.address}</small>
-          <p>{campus.description}</p>
-          <Link to={`/campuses/${campus.id}/update`}>Update Campus</Link>
+      <div className="container" key={campus.id}>
+        <div className="top-container">
+          <div className="left-container">
+            <img src={campus.imageUrl} />
+          </div>
+          <div className="right-container">
+            <h3>{campus.name}</h3>
+            <small>{campus.address}</small>
+            <p>{campus.description}</p>
+            <Link to={`/campuses/${campus.id}/update`}>Update Campus</Link>
+          </div>
         </div>
         <div className="bottom-container">
           <h4>Students affiliate with campus:</h4>
