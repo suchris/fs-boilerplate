@@ -25,12 +25,19 @@ class CreateStudent extends Component {
 
   onSubmit(ev) {
     ev.preventDefault();
-    const { history, createStudent } = this.props;
-    createStudent(this.state, history);
+    const reg = /^[^\s@]+@[^\s@]+$/;
+
+    // validate email
+    if (reg.test(this.state.email)) {
+      const { history, createStudent } = this.props;
+      createStudent(this.state, history);
+    } else {
+      window.alert("Please enter a valid email");
+    }
   }
 
   render() {
-    const { firstName, lastName, email, imageUrl, gpa } = this.state;
+    const { firstName, lastName, email } = this.state;
 
     return (
       <div>
@@ -41,7 +48,7 @@ class CreateStudent extends Component {
           <input type="text" name="lastName" onChange={this.onChange} />
           <label>Email </label>
           <input type="text" name="email" onChange={this.onChange} />
-          <button disabled={!firstName || !lastName || !email}>Add</button>
+          <button disabled={!firstName || !lastName || !email}>Create</button>
         </form>
       </div>
     );

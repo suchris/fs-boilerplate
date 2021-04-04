@@ -49,7 +49,7 @@ class CreateCampus extends Component {
             Address
             <input type="text" name="address" onChange={this.onChange} />
           </label>
-          <button disabled={!name || !address}>Add</button>
+          <button disabled={!name || !address}>Create</button>
         </form>
       </div>
     );

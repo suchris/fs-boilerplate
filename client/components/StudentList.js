@@ -31,7 +31,16 @@ class StudentList extends Component {
     }
 
     if (sort) {
-      filterStudents = filterStudents.sort((a, b) => (a.gpa < b.gpa ? 1 : -1));
+      // if no GPA or same GPA sort by name
+      filterStudents = filterStudents.sort((a, b) =>
+        a.gpa < b.gpa
+          ? 1
+          : !a.gpa || !b.gpa || a.gpa === b.gpa
+          ? a.lastName > b.lastName
+            ? 1
+            : -1
+          : -1
+      );
     } else {
       filterStudents = filterStudents.sort((a, b) =>
         a.lastName > b.lastName ? 1 : -1

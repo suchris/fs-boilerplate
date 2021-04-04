@@ -13,7 +13,7 @@
 
 ## Application was deployed to heroku
 
-https://csu-juniorproject.com/
+https://csu-juniorproject.herokuapp.com/
 
 ## Getting started
 

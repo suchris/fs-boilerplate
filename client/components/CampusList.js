@@ -24,10 +24,18 @@ class CampusList extends Component {
       return <h3>Loading...</h3>;
     }
 
+    // short by student count then by campus name if count is the same
     var sortCampuses = campuses.sort((a, b) =>
-      a.students.length < b.students.length ? 1 : -1
+      a.students.length < b.students.length
+        ? 1
+        : a.students.length === b.students.length
+        ? a.name > b.name
+          ? 1
+          : -1
+        : -1
     );
 
+    // sort by campus name
     if (!sort) {
       sortCampuses = campuses.sort((a, b) => (a.name > b.name ? 1 : -1));
     }
