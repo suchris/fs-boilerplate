@@ -41,6 +41,8 @@ class StudentList extends Component {
     return (
       <div>
         <h3>List of Students</h3>
+        <Link to="/students/create">Add New Student</Link>
+        <hr></hr>
         <select
           name="filter"
           id="filter-select"
@@ -59,18 +61,20 @@ class StudentList extends Component {
           <option value={false}>Sort by last name</option>
           <option value={true}>Sort by gpa</option>
         </select>
-        <Link to="/students/create">Add New Student</Link>
-        <hr></hr>
-        <div className="students">
+        <div className="list">
           {filterStudents.map((student) => {
             return (
-              <div key={student.id}>
-                <img src={student.imageUrl} />
+              <div key={student.id} className="card">
                 <Link to={`/students/${student.id}`}>
-                  {student.firstName} {student.lastName}
+                  <img src={student.imageUrl} />
+                  <p className="card_name">
+                    {student.firstName} {student.lastName}
+                  </p>
+                  <p>{student.email}</p>
+                  <p>GPA: {student.gpa}</p>
                 </Link>
                 <button onClick={() => deleteStudent(student, history)}>
-                  x
+                  Delete
                 </button>
               </div>
             );
@@ -89,8 +93,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteStudent: (student, history) =>
-      dispatch(deleteStudent(student, history)),
+    deleteStudent: (student) => dispatch(deleteStudent(student)),
   };
 };
 

@@ -35,6 +35,8 @@ class CampusList extends Component {
     return (
       <div>
         <h3>List of Campus</h3>
+        <Link to="/campuses/create">Add Campus</Link>
+        <hr></hr>
         <select
           name="sort"
           id="sort-select"
@@ -44,16 +46,18 @@ class CampusList extends Component {
           <option value={true}>Sort by student count</option>
           <option value={false}>Sort by name</option>
         </select>
-        <Link to="/campuses/create">Add Campus</Link>
-        <hr></hr>
-        <div className="campuses">
+        <div className="list">
           {sortCampuses.map((campus) => {
             return (
-              <div key={campus.id}>
-                <img src={campus.imageUrl} />
-                <Link to={`/campuses/${campus.id}`}>{campus.name}</Link>
-                <p>{campus.students ? campus.students.length : 0} students</p>
-                <button onClick={() => deleteCampus(campus, history)}>x</button>
+              <div key={campus.id} className="card">
+                <Link to={`/campuses/${campus.id}`}>
+                  <img src={campus.imageUrl} />
+                  <p className="card_name">{campus.name}</p>
+                  <p>{campus.students ? campus.students.length : 0} students</p>
+                </Link>
+                <button onClick={() => deleteCampus(campus, history)}>
+                  Delete
+                </button>
               </div>
             );
           })}

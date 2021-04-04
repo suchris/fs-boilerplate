@@ -113,12 +113,11 @@ const createCampus = ({ name, imageUrl, address, description }, history) => {
   };
 };
 
-const deleteCampus = (campus, history) => {
+const deleteCampus = (campus) => {
   return async (dispatch) => {
     await axios.delete(`/api/campuses/${campus.id}`);
     const students = (await axios.get("/api/students")).data;
     dispatch(deleteCampusAction(campus, students));
-    history.push("/campuses");
   };
 };
 
@@ -202,12 +201,11 @@ const createStudent = (
   };
 };
 
-const deleteStudent = (student, history) => {
+const deleteStudent = (student) => {
   return async (dispatch) => {
     await axios.delete(`/api/students/${student.id}`);
     const campuses = (await axios.get("/api/campuses")).data;
     dispatch(deleteStudentAction(student, campuses));
-    history.push("/students");
   };
 };
 
