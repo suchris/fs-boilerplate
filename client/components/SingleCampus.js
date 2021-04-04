@@ -31,7 +31,7 @@ class SingleCampus extends Component {
           </div>
         </div>
         <div className="bottom-container">
-          <h4>Students affiliate with campus:</h4>
+          <h4>Registered students:</h4>
           <ul>
             {campus.students.length === 0 ? (
               <p>No students</p>
@@ -42,11 +42,7 @@ class SingleCampus extends Component {
                     <Link to={`/students/${student.id}`}>
                       {student.firstName} {student.lastName}
                     </Link>
-                    <button
-                      onClick={() =>
-                        unregisterStudent(campus, student, history)
-                      }
-                    >
+                    <button onClick={() => unregisterStudent(student, history)}>
                       Unregister
                     </button>
                   </li>
@@ -69,8 +65,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    unregisterStudent: (campus, student, history) =>
-      dispatch(unregisterStudent(campus, student, history)),
+    unregisterStudent: (student, history) =>
+      dispatch(unregisterStudent(student, history)),
   };
 };
 

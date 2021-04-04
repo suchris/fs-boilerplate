@@ -178,7 +178,7 @@ function reducer(state = initialState, action) {
         const { student, campus } = action;
         const { students, campuses, unassignedStudents } = state;
 
-        let newCampuses = campuses;
+        let newCampuses = [...campuses];
         if (campus !== null) {
           newCampuses = newCampuses.map((c) =>
             c.id === campus.id ? { ...c, ...campus } : c

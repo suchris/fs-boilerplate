@@ -35,13 +35,13 @@ class App extends React.Component {
         <Route component={CampusList} path="/campuses" exact />
         <Switch>
           <Route component={CreateCampus} path="/campuses/create" exact />
-          <Route component={SingleCampus} path="/campuses/:id" />
+          <Route component={SingleCampus} path="/campuses/:id" exact />
         </Switch>
         <Route component={UpdateCampus} path="/campuses/:id/update" exact />
         <Route component={StudentList} path="/students" exact />
         <Switch>
           <Route component={CreateStudent} path="/students/create" exact />
-          <Route component={SingleStudent} path="/students/:id" />
+          <Route component={SingleStudent} path="/students/:id" exact />
         </Switch>
         <Route component={UpdateStudent} path="/students/:id/update" exact />
       </Router>

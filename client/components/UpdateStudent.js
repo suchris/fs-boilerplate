@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateStudent } from "../redux/actions";
+import { updateStudent, registerStudent } from "../redux/actions";
 
 class UpdateStudent extends Component {
   constructor(props) {
@@ -30,8 +30,9 @@ class UpdateStudent extends Component {
   }
 
   onChange(ev) {
+    const { name, value } = ev.target;
     const newState = { ...this.state };
-    newState.student[ev.target.name] = ev.target.value;
+    newState.student[name] = value;
     this.setState(newState);
   }
 
@@ -39,46 +40,64 @@ class UpdateStudent extends Component {
     ev.preventDefault();
 
     const { history, updateStudent } = this.props;
-    updateStudent(this.state.student, history);
+    const { student } = this.state;
+    updateStudent(student, history);
   }
 
   render() {
     const { student } = this.state;
+    const { campuses } = this.props;
 
     if (!student) {
       return <h3>Loading...</h3>;
     }
 
+    const campusSelected = student.campusId !== null;
+
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <label>
-            First Name
-            <input
-              type="text"
-              name="firstName"
-              value={student.firstName}
-              onChange={this.onChange}
-            />
-          </label>
-          <label>
-            Last Name
-            <input
-              type="text"
-              name="lastName"
-              value={student.lastName}
-              onChange={this.onChange}
-            />
-          </label>
-          <label>
-            Email
-            <input
-              type="text"
-              name="email"
-              value={student.email}
-              onChange={this.onChange}
-            />
-          </label>
+          <label>First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            value={student.firstName}
+            onChange={this.onChange}
+          />
+          <br></br>
+          <label>Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            value={student.lastName}
+            onChange={this.onChange}
+          />
+          <br></br>
+          <label>Email</label>
+          <input
+            type="text"
+            name="email"
+            value={student.email}
+            onChange={this.onChange}
+          />
+          {/* <br></br>
+          <label>Choose a campus:</label>
+          <select
+            name="campusId"
+            id="campus-select"
+            defaultValue={campusSelected ? student.campus.id : ""}
+            onChange={this.onChange}
+          >
+            <option>--Please choose an option--</option>
+            {campuses.map((campus) => {
+              return (
+                <option key={campus.id} value={campus.id}>
+                  {campus.name}
+                </option>
+              );
+            })}
+          </select> */}
+          <br></br>
           <button>Update</button>
         </form>
       </div>
@@ -89,6 +108,7 @@ class UpdateStudent extends Component {
 const mapStateToProps = (state) => {
   return {
     students: state.students,
+    campuses: state.campuses,
   };
 };
 

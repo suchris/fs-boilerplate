@@ -123,7 +123,6 @@ const deleteCampus = (campus, history) => {
 };
 
 const updateCampus = (campus, history) => {
-  console.log("updateCampus:", campus);
   return async (dispatch) => {
     let updatedCampus = (await axios.put(`/api/campuses/${campus.id}`, campus))
       .data;
@@ -134,27 +133,34 @@ const updateCampus = (campus, history) => {
   };
 };
 
-const unregisterStudent = (campus, student, history) => {
+const unregisterStudent = (student, history) => {
+  console.log("unregisterStudent:", student);
   return async (dispatch) => {
-    let updatedStudent = (
-      await axios.put(`/api/students/${student.id}`, { campusId: null })
-    ).data;
-    updatedStudent = { ...updatedStudent, campus: null };
-    const updatedCampus = (await axios.get(`api/campuses/${campus.id}`)).data;
-    dispatch(unregisterStduentAction(updatedCampus, updatedStudent));
-
-    history.push(`/campuses/${campus.id}`);
+    // if student was registered to a campus, unregister
+    if (student.campusId !== null) {
+      let updatedStudent = (
+        await axios.put(`/api/students/${student.id}`, { campusId: null })
+      ).data;
+      updatedStudent = { ...updatedStudent, campus: null };
+      const updatedCampus = (
+        await axios.get(`api/campuses/${student.campusId}`)
+      ).data;
+      dispatch(unregisterStduentAction(updatedCampus, updatedStudent));
+    }
+    history.push(`/campuses/${student.campusId}`);
   };
 };
 
 const registerStudent = (campus, student, history) => {
-  console.log("registerStudent: ", campus, student);
+  console.log("registerStudent: ", student);
+
   return async (dispatch) => {
     let updatedStudent = (
       await axios.put(`/api/students/${student.id}`, { campusId: campus.id })
     ).data;
     updatedStudent = { ...updatedStudent, campus };
-    const updatedCampus = (await axios.get(`api/campuses/${campus.id}`)).data;
+    const updatedCampus = (await axios.get(`/api/campuses/${campus.id}`)).data;
+
     dispatch(registerStudentAction(updatedCampus, updatedStudent));
 
     history.push(`/campuses/${campus.id}`);

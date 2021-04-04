@@ -15,8 +15,9 @@ router.get("/campuses", async (req, res, next) => {
     });
     if (campuses) {
       res.status(200).send(campuses);
+    } else {
+      res.status(400).send({ message: "No campus found" });
     }
-    res.status(400).send({ message: "No campus found" });
   } catch (ex) {
     next(ex);
   }
@@ -32,8 +33,9 @@ router.get("/campuses/:id", async (req, res, next) => {
     });
     if (campus) {
       res.status(200).send(campus);
+    } else {
+      res.status(400).send({ message: "No campus found" });
     }
-    res.status(400).send({ message: "No campus found" });
   } catch (ex) {
     next(ex);
   }
@@ -41,12 +43,10 @@ router.get("/campuses/:id", async (req, res, next) => {
 
 router.post("/campuses", async (req, res, next) => {
   try {
-    const { name, address, imageUrl, description } = req.body;
+    const { name, address } = req.body;
     const campus = await Campus.create({
       name,
       address,
-      imageUrl,
-      description,
     });
     const addedCampus = await Campus.findByPk(campus.id, {
       include: { model: Student, require: true },
@@ -74,11 +74,17 @@ router.put("/campuses/:id", async (req, res, next) => {
     const { id } = req.params;
     const campus = await Campus.findByPk(id);
     if (campus) {
-      const { name, address } = req.body;
-      const updatedCampus = await campus.update({ name, address });
+      const { name, address, imageUrl, description } = req.body;
+      const updatedCampus = await campus.update({
+        name,
+        address,
+        imageUrl,
+        description,
+      });
       res.status(200).send(updatedCampus);
+    } else {
+      res.status(400).send(`No campus with id ${id} is found`);
     }
-    res.status(400).send(`No campus with id ${id} is found`);
   } catch (ex) {
     next(ex);
   }
@@ -86,11 +92,14 @@ router.put("/campuses/:id", async (req, res, next) => {
 
 router.get("/students", async (req, res, next) => {
   try {
-    const students = await Student.findAll({ include: Campus });
+    const students = await Student.findAll({
+      include: { model: Campus, require: true },
+    });
     if (students) {
       res.status(200).send(students);
+    } else {
+      res.status(400).send({ message: "No student found" });
     }
-    res.status(400).send({ message: "No student found" });
   } catch (ex) {
     next(ex);
   }
@@ -101,8 +110,9 @@ router.get("/students/:id", async (req, res, next) => {
     const student = await Student.findByPk(req.params.id, { include: Campus });
     if (student) {
       res.status(200).send(student);
+    } else {
+      res.status(400).send({ message: "No student found" });
     }
-    res.status(400).send({ message: "No student found" });
   } catch (ex) {
     next(ex);
   }
@@ -110,14 +120,12 @@ router.get("/students/:id", async (req, res, next) => {
 
 router.post("/students", async (req, res, next) => {
   try {
-    const { firstName, lastName, email, imageUrl, gpa } = req.body;
+    const { firstName, lastName, email } = req.body;
     res.status(201).send(
       await Student.create({
         firstName,
         lastName,
         email,
-        imageUrl,
-        gpa,
       })
     );
   } catch (ex) {
@@ -127,10 +135,13 @@ router.post("/students", async (req, res, next) => {
 
 router.delete("/students/:id", async (req, res, next) => {
   try {
-    const student = await Student.findByPk(req.params.id);
+    const { id } = req.params;
+    const student = await Student.findByPk(id);
     if (student) {
       await student.destroy();
       res.status(204).send(student);
+    } else {
+      res.status(400).send(`Cannot find student with id ${id}`);
     }
   } catch (ex) {
     next(ex);
@@ -142,15 +153,19 @@ router.put("/students/:id", async (req, res, next) => {
     const { id } = req.params;
     const student = await Student.findByPk(id);
     if (student) {
-      const { firstName, lastName, email } = req.body;
+      const { firstName, lastName, email, imageUrl, gpa, campusId } = req.body;
       const updatedStudent = await student.update({
         firstName,
         lastName,
         email,
+        imageUrl,
+        gpa,
+        campusId,
       });
       res.status(200).send(updatedStudent);
+    } else {
+      res.status(400).send(`No student with id ${id} is found`);
     }
-    res.status(400).send(`No student with id ${id} is found`);
   } catch (ex) {
     next(ex);
   }

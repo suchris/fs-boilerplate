@@ -33,11 +33,13 @@ class UpdateCampus extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onAssign = this.onAssign.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
   onChange(ev) {
+    const { name, value } = ev.target;
     const newState = { ...this.state };
-    newState.campus[ev.target.name] = ev.target.value;
+    newState.campus[name] = value;
     this.setState(newState);
   }
 
@@ -48,9 +50,9 @@ class UpdateCampus extends Component {
   }
 
   onAssign(ev) {
-    console.log("onAssign:", ev.target.value);
     const newState = { ...this.state };
-    newState[ev.target.name] = ev.target.value;
+    const { name, value } = ev.target;
+    newState[name] = value;
     this.setState(newState);
   }
 
@@ -58,7 +60,6 @@ class UpdateCampus extends Component {
     const { history, registerStudent } = this.props;
     const { campus, unassignedStudents, studentId } = this.state;
     const student = unassignedStudents.find((us) => us.id === studentId * 1);
-    console.log(student);
     registerStudent(campus, student, history);
   }
 
@@ -93,9 +94,10 @@ class UpdateCampus extends Component {
           <button>Update</button>
         </form>
         <div>
+          <h3>Students registered to this campus:</h3>
           <ul>
             {campus.students.length === 0 ? (
-              <p>No students</p>
+              <p>No students registered</p>
             ) : (
               campus.students.map((student) => {
                 return (
@@ -110,7 +112,7 @@ class UpdateCampus extends Component {
           </ul>
         </div>
         <div>
-          <label>Choose a student:</label>
+          <label>Register a student:</label>
           <select name="studentId" id="student-select" onChange={this.onAssign}>
             <option value="">--Please choose an option--</option>
             {unassignedStudents.map((us) => {

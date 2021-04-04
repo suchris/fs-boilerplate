@@ -29,11 +29,12 @@ class SingleStudent extends Component {
             </h3>
             <p>Email: {student.email}</p>
             <p>GPA: {student.gpa}</p>
-            <Link to={`/students/${student.id}/update`}>Update</Link>
+            <Link to={`/students/${student.id}/update`}>Update Student</Link>
           </div>
         </div>
         <div className="bottom-container">
-          Affiliate Campus:
+          Registered at:
+          <br></br>
           {student.campus && student.campus.id ? (
             <Link to={`/campuses/${student.campus.id}`}>
               {student.campus.name}
