@@ -84,6 +84,7 @@ const updateStudentAction = (student, campus) => ({
 // THUNK CREATORS
 const getCampuses = () => {
   return async (dispatch) => {
+    //should wrap any async code in a try catch
     const campuses = (await axios.get("/api/campuses")).data;
     dispatch(getCampusesAction(campuses));
   };
@@ -117,6 +118,9 @@ const deleteCampus = (campus) => {
   return async (dispatch) => {
     await axios.delete(`/api/campuses/${campus.id}`);
     const students = (await axios.get("/api/students")).data;
+    /*another approach to handling the students if you wanted to avoid
+    making 2 calls to the db, is to filter over the list of students and set their campusId to null if it matches the id of the deleted campus
+    */
     dispatch(deleteCampusAction(campus, students));
   };
 };
@@ -125,7 +129,9 @@ const updateCampus = (campus, history) => {
   return async (dispatch) => {
     let updatedCampus = (await axios.put(`/api/campuses/${campus.id}`, campus))
       .data;
+    /* in your api route to update a campus, you already return the updated campus. both of these routes return the same information, so you don't need to get the updated campus after you've made the call to update it. */
     updatedCampus = (await axios.get(`/api/campuses/${campus.id}`)).data;
+    /*see comments in routes/index.js about including information about the campus model when you get all of your students.   */
     const students = (await axios.get("/api/students")).data;
     dispatch(updateCampusAction(updatedCampus, students));
     history.push(`/campuses/${updatedCampus.id}`);

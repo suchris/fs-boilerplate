@@ -8,6 +8,7 @@ const {
 router.get("/campuses", async (req, res, next) => {
   try {
     const campuses = await Campus.findAll({
+      /*you dont need to include the students when you're getting all campuses, especially if you're also getting all the students when you first start up the app. it essentially means you have the students and campuses multiple times on your front end. */
       include: {
         model: Student,
         require: true,
@@ -48,6 +49,7 @@ router.post("/campuses", async (req, res, next) => {
       name,
       address,
     });
+    /*when you're first adding a campus, there aren't any students to include, so getting the campus again isn't necessary */
     const addedCampus = await Campus.findByPk(campus.id, {
       include: { model: Student, require: true },
     });
@@ -64,6 +66,7 @@ router.delete("/campuses/:id", async (req, res, next) => {
       await campus.destroy();
       res.status(204).send(campus);
     }
+    //should handle what happens if you don't find a campus
   } catch (ex) {
     next(ex);
   }

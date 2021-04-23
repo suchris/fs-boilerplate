@@ -17,6 +17,8 @@ import {
 const initialState = {
   campuses: [],
   students: [],
+  /*initializing parts of your state as undefined could lead to bugs.
+  it's better to initialize them as the same type they will be when you have the data for them. so in the case of selectedCampus and selectedStudent they should both be empty objects. */
   selectedCampus: undefined,
   selectedStudents: undefined,
   unassignedStudents: [],
@@ -33,6 +35,7 @@ function reducer(state = initialState, action) {
     case GET_CAMPUS:
       {
         const { campus } = action;
+        //typo in selectedCampus
         return { ...state, selectdCampus: campus };
       }
       break;
@@ -53,6 +56,7 @@ function reducer(state = initialState, action) {
       {
         const { campus } = action;
         if (!campus.students) {
+          //dot notation should be fine here
           campus[students] = [];
         }
         const { campuses } = state;

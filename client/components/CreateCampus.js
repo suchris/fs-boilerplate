@@ -6,6 +6,9 @@ class CreateCampus extends Component {
   constructor() {
     super();
     this.state = {
+      /*initializing state as undefined can lead to bugs
+      it's better to initialize to an empty string, if that's what it will eventually be
+      */
       name: undefined,
       imageUrl: undefined,
       address: undefined,
